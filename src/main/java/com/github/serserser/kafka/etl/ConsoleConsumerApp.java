@@ -6,7 +6,7 @@ public class ConsoleConsumerApp {
 
     public static void main(String[] args) throws InterruptedException {
         try ( Scanner consoleIn = new Scanner(System.in) ) {
-            String topicName = args[0];
+            String topicName = "counted";
             String groupId = args[1];
 
             ConsumerThread consumer = new ConsumerThread(topicName, groupId);

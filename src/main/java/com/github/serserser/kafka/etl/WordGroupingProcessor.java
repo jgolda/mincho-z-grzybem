@@ -15,18 +15,20 @@ public class WordGroupingProcessor {
 
     public static void main(final String[] args) {
         Properties config = new Properties();
-        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "wordcount-application");
+        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "grouper");
         config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
         KStreamBuilder builder = new KStreamBuilder();
-        KStream<String, String> textLines = builder.stream("kafka-etl");
+        KStream<String, String> textLines = builder.stream("filtered");
         KTable<String, Long> wordCounts = textLines
-                .flatMapValues(textLine -> Arrays.asList(textLine.toLowerCase().split("\\W+")))
-                .groupBy((key, word) -> word)
+                .groupBy((key, word) -> {
+                    System.out.println(word);
+                    return word;
+                })
                 .count(Materialized.as("Counts"));
-        wordCounts.to(Serdes.String(), Serdes.Long(), "WordsWithCountsTopic");
+        wordCounts.to(Serdes.String(), Serdes.Long(), "counted");
 
         KafkaStreams streams = new KafkaStreams(builder, config);
         streams.start();

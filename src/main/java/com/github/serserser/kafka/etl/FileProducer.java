@@ -7,22 +7,31 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Properties;
 import java.util.Scanner;
 
-public class ConsoleProducerApp {
+public class FileProducer {
 
     public static void main(String[] args) {
-        String topicName = "kafka-etl";
-        try ( Scanner consoleIn = new Scanner(System.in);
-              Producer<String, String> producer = new KafkaProducer<>(createKafkaProperties()); ) {
+        String topicName = args[0];
+        String filename = args[1];
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File(filename));
+        } catch ( FileNotFoundException e ) {
+            e.printStackTrace();
+            return;
+        }
+
+        try ( Producer<String, String> producer = new KafkaProducer<>(createKafkaProperties()); ) {
             System.out.println("Enter message to be sent to Kafka. Type 'exit' to quit");
 
-            String line = consoleIn.nextLine();
-            while ( !line.equals("exit") ) {
+            while ( scanner.hasNext() ) {
+                String line = scanner.next();
                 ProducerRecord<String, String> record = new ProducerRecord<>(topicName, line);
                 producer.send(record);
-                line = consoleIn.nextLine();
             }
         }
     }
