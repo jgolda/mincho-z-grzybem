@@ -2,40 +2,46 @@ package com.github.serserser.kafka.etl.impl.data;
 
 public class PurchasePricePair {
 
-    private Integer clientId;
+    private Purchase purchase = new Purchase();
     private Double price;
-    private Integer quantity;
 
-    public PurchasePricePair(Integer clientId, Double price, Integer quantity) {
-        this.clientId = clientId;
+    public PurchasePricePair(Purchase purchase, Double price) {
+        this.purchase = purchase;
         this.price = price;
-        this.quantity = quantity;
     }
 
     public PurchasePricePair() {
     }
 
     public Integer getClientId() {
-        return clientId;
+        return purchase.getClientId();
+    }
+
+    public void setClientId(Integer clientId) {
+        purchase.setClientId(clientId);
     }
 
     public Double getPrice() {
         return price;
     }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
-    }
-
     public void setPrice(Double price) {
         this.price = price;
     }
 
+    public Integer getQuantity() {
+        return purchase.getQuantity();
+    }
+
     public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+        purchase.setQuantity(quantity);
+    }
+
+    public Integer getPosId() {
+        return purchase.getPosId();
+    }
+
+    public void setPosId(Integer posId) {
+        purchase.setPosId(posId);
     }
 }

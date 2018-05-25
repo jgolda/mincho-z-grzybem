@@ -38,4 +38,16 @@ public class Purchase {
     public Integer getPosId() {
         return posId;
     }
+
+    public void setPosId(Integer posId) {
+        this.posId = posId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }

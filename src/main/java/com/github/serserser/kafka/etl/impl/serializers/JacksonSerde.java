@@ -11,11 +11,18 @@ import java.util.Map;
 
 public class JacksonSerde<T> implements Serializer<T>, Deserializer<T>, Serde<T> {
 
+    public JacksonSerde(Class<T> serializedClass, boolean acceptNull) {
+        this(serializedClass);
+        this.acceptNull = acceptNull;
+    }
+
     public JacksonSerde(Class<T> serializedClass) {
         this.serializedClass = serializedClass;
     }
 
     private Class<T> serializedClass;
+
+    private boolean acceptNull = false;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -25,6 +32,9 @@ public class JacksonSerde<T> implements Serializer<T>, Deserializer<T>, Serde<T>
 
     @Override
     public T deserialize(String topic, byte[] data) {
+        if (data == null && acceptNull) {
+            return null;
+        }
         try {
             return mapper.readValue(data, serializedClass());
         } catch ( IOException e ) {

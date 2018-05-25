@@ -1,16 +1,10 @@
 package com.github.serserser.kafka.etl.impl.serializers;
 
-import com.github.serserser.kafka.etl.impl.data.Commodity;
-import com.github.serserser.kafka.etl.impl.data.Country;
-import com.github.serserser.kafka.etl.impl.data.Purchase;
-import com.github.serserser.kafka.etl.impl.data.PurchasePricePair;
+import com.github.serserser.kafka.etl.impl.Average;
+import com.github.serserser.kafka.etl.impl.data.*;
 import org.apache.kafka.common.serialization.Serde;
 
 public class CustomSerdes {
-
-    public static Serde<Country> country() {
-        return new JacksonSerde<>(Country.class);
-    }
 
     public static Serde<Commodity> commodity() {
         return new CommoditySerde();
@@ -24,4 +18,19 @@ public class CustomSerdes {
         return new JacksonSerde<>(PurchasePricePair.class);
     }
 
+    public static Serde<Country> country() {
+        return new CountrySerde();
+    }
+
+    public static Serde<PointOfSale> pointOfSale() {
+        return new PointOfSaleSerde();
+    }
+
+    public static Serde<Tuple> tuple() {
+        return new JacksonSerde<>(Tuple.class);
+    }
+
+    public static Serde<Average> average() {
+        return new JacksonSerde<>(Average.class, true);
+    }
 }
