@@ -8,7 +8,6 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 
-import java.util.Arrays;
 import java.util.Properties;
 
 public class WordGroupingProcessor {
