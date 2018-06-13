@@ -9,4 +9,5 @@ public class Topics {
     public static final String COMMODITIES_TOPIC_NAME = "polsl-commodities";
     public static final String COUNTRIES_TOPIC_NAME = "polsl-countries";
     public static final String POINT_OF_SALE_TOPIC_NAME = "polsl-point-of-sale";
+    public static final String AVERAGE_PURCHASES_QUANTITY = "polsl-average-purchases-quantity";
 }

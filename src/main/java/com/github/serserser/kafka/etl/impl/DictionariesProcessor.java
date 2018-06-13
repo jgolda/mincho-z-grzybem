@@ -46,6 +46,7 @@ public class DictionariesProcessor implements Runnable, Loader {
                 commoditiesStream.map(this::createCommodity)
                         .forEach(cmdty -> producer.send(new ProducerRecord<>(COMMODITIES_TOPIC_NAME, cmdty)));
             }
+
             System.out.println("Loaded commodities to kafka");
         }
     }
