@@ -15,8 +15,36 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
     compile group: 'org.apache.kafka', name: 'kafka-streams', version: '1.0.0'
 
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.0'
+
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.5'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main'
+        }
+    }
+}
+
+task dictionaryLoader(type: Jar) {
+
+}
+
+task averagePurchases(type: Jar) {
+    manifest {
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.AveragePurchasesInCountriesProcessingApp")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("src/main/resources/data/**", "src/main/resources/example.txt")
+    with jar
+    baseName 'averagePurchases'
+    version ''
 }

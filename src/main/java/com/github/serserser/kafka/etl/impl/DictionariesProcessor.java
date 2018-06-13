@@ -1,7 +1,6 @@
 package com.github.serserser.kafka.etl.impl;
 
 import com.github.serserser.kafka.etl.impl.data.Commodity;
-import com.github.serserser.kafka.etl.impl.data.Purchase;
 import com.github.serserser.kafka.etl.impl.serializers.CustomSerdes;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -22,11 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.github.serserser.kafka.etl.impl.Topics.COMMODITIES_KEY_PRICE_TOPIC_NAME;
 import static com.github.serserser.kafka.etl.impl.Topics.COMMODITIES_TOPIC_NAME;
 
-public class CommoditiesMapper implements Runnable, Loader {
+public class DictionariesProcessor implements Runnable, Loader {
     private static final boolean TEST_DATA_LOAD = true;
-    private static final String APPLICATION_ID = "commodities-price-mapper";
+    private static final String APPLICATION_ID = "dictionaries-processor";
 
     @Override
     public void load() throws URISyntaxException, IOException {
@@ -68,7 +68,7 @@ public class CommoditiesMapper implements Runnable, Loader {
         StreamsBuilder builder = new StreamsBuilder();
         KStream<Integer, Double> commoditiesWithPricesStream = builder.stream(COMMODITIES_TOPIC_NAME, Consumed.with(Serdes.Integer(), CustomSerdes.commodity()))
                 .map((key, value) -> new KeyValue<>(value.getCommodityId(), value.getPrice()));
-        commoditiesWithPricesStream.to("polsl-temp-commodities-prices", Produced.with(Serdes.Integer(), Serdes.Double()));
+        commoditiesWithPricesStream.to(COMMODITIES_KEY_PRICE_TOPIC_NAME, Produced.with(Serdes.Integer(), Serdes.Double()));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), Utils.createStreamsKafkaProperties(APPLICATION_ID));
         streams.start();

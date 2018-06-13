@@ -28,7 +28,7 @@ public class Generator {
         int numberOfShops = 100_000;
         int numberOfCommodities = 50_000;
         double maxPrice = 1000;
-        int numberOfPurchases = 40_000_000;
+        int numberOfPurchases = 2_000_000;
         int maxQuantity = 20;
 
         List<Integer> clientIds = generateClientIds(baseDirectory, numberOfClients);
