@@ -14,11 +14,8 @@ import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static com.github.serserser.kafka.etl.impl.Topics.*;
 
@@ -57,21 +54,6 @@ public class ClientTotalPurchaseProcessor implements Runnable, Loader {
             try ( Producer<String, Commodity> producer = new KafkaProducer<>(Utils.createKafkaProperties(CustomSerdes.commodity().getClass())) ) {
                 commodities.forEach(cmdty -> producer.send(new ProducerRecord<>(COMMODITIES_TOPIC_NAME, cmdty)));
             }
-        } else {
-
-            try ( Producer<String, Purchase> producer = new KafkaProducer<>(Utils.createKafkaProperties(CustomSerdes.purchase().getClass()));
-                  Stream<String> purchaseStream = Files.lines(Paths.get(getClass().getClassLoader().getResource("data/purchases.txt").toURI()))) {
-                purchaseStream.map(this::createPurchase)
-                        .forEach(purchase -> producer.send(new ProducerRecord<>(PURCHASES_TOPIC_NAME, purchase)));
-            }
-            System.out.println("Loaded purchases to kafka");
-
-            try ( Producer<String, Commodity> producer = new KafkaProducer<>(Utils.createKafkaProperties(CustomSerdes.commodity().getClass()));
-                  Stream<String> commoditiesStream = Files.lines(Paths.get(getClass().getClassLoader().getResource("data/commodities.txt").toURI()))) {
-                commoditiesStream.map(this::createCommodity)
-                    .forEach(cmdty -> producer.send(new ProducerRecord<>(COMMODITIES_TOPIC_NAME, cmdty)));
-            }
-            System.out.println("Loaded commodities to kafka");
         }
     }
 
@@ -83,14 +65,6 @@ public class ClientTotalPurchaseProcessor implements Runnable, Loader {
     private Purchase createPurchase(String line) {
         String[] fields = line.split(",");
         return new Purchase(toInt(fields[0]), toInt(fields[1]), toInt(fields[2]), toInt(fields[3]), toInt(fields[4]));
-    }
-
-    private Integer toInt(String str) {
-        return Integer.valueOf(str);
-    }
-
-    private Double toDouble(String str) {
-        return Double.valueOf(str);
     }
 
     @Override

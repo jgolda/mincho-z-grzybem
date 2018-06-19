@@ -24,7 +24,7 @@ import static com.github.serserser.kafka.etl.impl.Topics.PURCHASES_TOPIC_NAME;
 
 public class AveragePurchaseQuantityProcessor implements Loader, Runnable {
 
-    private static final boolean TEST_DATA_LOAD = true;
+    private static final boolean TEST_DATA_LOAD = false;
     private static final String APPLICATION_ID = "average-item-count-processor";
 
     @Override

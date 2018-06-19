@@ -19,7 +19,7 @@ import static com.github.serserser.kafka.etl.impl.Topics.*;
 
 public class AveragePurchasesInCountriesProcessor implements Runnable, Loader {
 
-    private static final boolean TEST_DATA_LOAD = true;
+    private static final boolean TEST_DATA_LOAD = false;
     private static final String APPLICATION_ID = "country-average-purchase-processor";
 
     @Override

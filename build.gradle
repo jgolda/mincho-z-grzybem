@@ -33,7 +33,29 @@ sourceSets {
 }
 
 task dictionaryLoader(type: Jar) {
+    manifest {
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.DictionariesProcessingApp")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("src/main/resources/example.txt")
+    with jar
+    baseName 'dictionaryLoader'
+    version ''
+}
 
+task purchaseLoader(type: Jar) {
+    manifest {
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.PurchaseLoader")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("src/main/resources/example.txt")
+    with jar
+    baseName 'purchaseLoader'
+    version ''
 }
 
 task averagePurchases(type: Jar) {
@@ -46,5 +68,70 @@ task averagePurchases(type: Jar) {
     exclude("src/main/resources/data/**", "src/main/resources/example.txt")
     with jar
     baseName 'averagePurchases'
+    version ''
+}
+
+task totalPurchases(type: Jar) {
+    manifest {
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.ClientTotalPurchaseProcessingApp")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("src/main/resources/data/**", "src/main/resources/example.txt")
+    with jar
+    baseName 'totalPurchases'
+    version ''
+}
+
+task averageQuantity(type: Jar) {
+    manifest {
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.AveragePurchaseQuantityProcessingApp")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("src/main/resources/data/**", "src/main/resources/example.txt")
+    with jar
+    baseName 'averageQuantity'
+    version ''
+}
+
+task averagePurchasesReceiver(type: Jar) {
+    manifest {
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.AveragePurchasesInCountriesReceiver")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("src/main/resources/data/**", "src/main/resources/example.txt")
+    with jar
+    baseName 'averagePurchasesReceiver'
+    version ''
+}
+
+task totalPurchasesReceiver(type: Jar) {
+    manifest {
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.ClientTotalPurchaseReceiver")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("src/main/resources/data/**", "src/main/resources/example.txt")
+    with jar
+    baseName 'totalPurchasesReceiver'
+    version ''
+}
+
+task averageQuantityReceiver(type: Jar) {
+    manifest {
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.AveragePurchaseQuantityReceiver")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("src/main/resources/data/**", "src/main/resources/example.txt")
+    with jar
+    baseName 'averageQuantityReceiver'
     version ''
 }

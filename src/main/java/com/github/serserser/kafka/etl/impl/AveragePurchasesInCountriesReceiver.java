@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.stream.StreamSupport;
 
-public class AvearagePurchasesInCountriesReceiver {
+public class AveragePurchasesInCountriesReceiver {
 
     public static void main(String[] args) throws InterruptedException {
         receive();

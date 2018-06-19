@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "polsl-purchases:4:1,polsl-purchases-by-clients:4:1,polsl-commodities:4:1,polsl-temp-commodities-prices:4:1,polsl-avg-purchases-by-countries:4:1,polsl-countries:4:1,polsl-point-of-sale:4:1,polsl-average-purchases-quantity:4:1"
+  dictionaryLoader:
+    image: dictionaries-loader:
+    depends_on:
+      - zookeeper
+      - kafka
+  averagePurchases:
+    image: average-purchases
+    depends_on:
+      - zookeeper
+      - kafka
