@@ -60,7 +60,7 @@ task purchaseLoader(type: Jar) {
 
 task averagePurchases(type: Jar) {
     manifest {
-        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.AveragePurchasesInCountriesProcessingApp")
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.AveragePurchasesInCountriesProcessor")
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
@@ -73,7 +73,7 @@ task averagePurchases(type: Jar) {
 
 task totalPurchases(type: Jar) {
     manifest {
-        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.ClientTotalPurchaseProcessingApp")
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.ClientTotalPurchaseProcessor")
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
@@ -86,7 +86,7 @@ task totalPurchases(type: Jar) {
 
 task averageQuantity(type: Jar) {
     manifest {
-        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.AveragePurchaseQuantityProcessingApp")
+        attributes("Main-Class": "com.github.serserser.kafka.etl.impl.AveragePurchaseQuantityProcessor")
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
