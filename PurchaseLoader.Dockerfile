@@ -1,6 +1,7 @@
 FROM openjdk:10-slim
 MAINTAINER jgolda
 
+ENV JAVA_OPTS=""
 ADD build/libs/purchaseLoader.jar /app.jar
 RUN set -o xtrace
-CMD ["java", "-jar", "/app.jar"]
+CMD ["sh", "-c", "java $JAVA_OPTS -jar /app.jar"]

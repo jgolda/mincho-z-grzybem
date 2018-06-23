@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  dictionaryLoader:
+    image: dictionary-loader
+  averagePurchases:
+    image: average-purchases
+  averageQuantity:
+    image: average-quantity
+  totalPurchases:
+    image: total-purchases
+  averagePurchasesReceiver:
+    image: average-purchases-receiver
+  averageQuantityReceiver:
+    image: average-quantity-receiver
+  totalPurchasesReceiver:
+    image: total-purchases-receiver

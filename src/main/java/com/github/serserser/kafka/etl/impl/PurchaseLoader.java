@@ -9,9 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 import static com.github.serserser.kafka.etl.impl.Topics.PURCHASES_TOPIC_NAME;
@@ -27,12 +28,25 @@ public class PurchaseLoader implements Loader {
 
     @Override
     public void load() throws URISyntaxException, IOException {
+        URI uri = getClass().getClassLoader().getResource("data/purchases.txt").toURI();
+        String[] uriElements = uri.toString().split("!");
+        logger.info("Started loading purchases to Kafka");
         try ( Producer<String, Purchase> producer = new KafkaProducer<>(Utils.createKafkaProperties(CustomSerdes.purchase().getClass()));
-              Stream<String> purchaseStream = Files.lines(Paths.get(getClass().getClassLoader().getResource("data/purchases.txt").toURI()))) {
+              FileSystem fs = getFileSystem(uriElements[0]);
+              Stream<String> purchaseStream = Files.lines(fs.getPath(uriElements[1]))) {
             purchaseStream.map(this::createPurchase)
                     .forEach(purchase -> producer.send(new ProducerRecord<>(PURCHASES_TOPIC_NAME, purchase)));
         }
         logger.info("Loaded purchases to kafka");
+    }
+
+    private FileSystem getFileSystem(String uriElement) throws IOException {
+        URI uri = URI.create(uriElement);
+        try {
+            return FileSystems.getFileSystem(uri);
+        } catch ( FileSystemNotFoundException e ) {
+            return FileSystems.newFileSystem(uri, new HashMap<>());
+        }
     }
 
     private Purchase createPurchase(String line) {

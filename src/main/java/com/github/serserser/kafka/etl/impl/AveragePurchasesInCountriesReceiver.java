@@ -5,12 +5,18 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.DoubleDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Properties;
 import java.util.stream.StreamSupport;
 
+import static com.github.serserser.kafka.etl.impl.Utils.KAFKA_URL;
+
 public class AveragePurchasesInCountriesReceiver {
+
+    private static final Logger logger = LoggerFactory.getLogger(AveragePurchasesInCountriesReceiver.class);
 
     public static void main(String[] args) throws InterruptedException {
         receive();
@@ -23,8 +29,9 @@ public class AveragePurchasesInCountriesReceiver {
                 ConsumerRecords<String, Double> records = consumer.poll(100);
                 StreamSupport.stream(records.spliterator(), false)
                         .map(record -> "countryCode: " + record.key() + ";\t average purchase:" + record.value())
-                        .forEach(System.out::println);
+                        .forEach(logger::info);
                 Thread.sleep(100);
+                logger.info("sleeping...");
             }
         }
     }
@@ -32,7 +39,7 @@ public class AveragePurchasesInCountriesReceiver {
 
     private static Properties createKafkaProperties() {
         Properties configProperties = new Properties();
-        configProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_URL);
         configProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getCanonicalName());
         configProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, DoubleDeserializer.class.getCanonicalName());
         configProperties.put(ConsumerConfig.GROUP_ID_CONFIG, "consumer-app");

@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.stream.StreamSupport;
 
+import static com.github.serserser.kafka.etl.impl.Utils.KAFKA_URL;
+
 
 public class ClientTotalPurchaseReceiver {
 
@@ -34,7 +36,7 @@ public class ClientTotalPurchaseReceiver {
 
     private static Properties createKafkaProperties() {
         Properties configProperties = new Properties();
-        configProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_URL);
         configProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class.getCanonicalName());
         configProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, DoubleDeserializer.class.getCanonicalName());
         configProperties.put(ConsumerConfig.GROUP_ID_CONFIG, "consumer-app");
