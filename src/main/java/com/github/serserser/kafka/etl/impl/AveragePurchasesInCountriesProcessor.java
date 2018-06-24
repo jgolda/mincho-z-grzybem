@@ -35,28 +35,28 @@ public class AveragePurchasesInCountriesProcessor implements Runnable {
 
         builder.stream(PURCHASES_TOPIC_NAME, Consumed.with(Serdes.Integer(), CustomSerdes.purchase()))
                 .map((key, value) -> {
-                    logger.info("map1. Id: " + value.getPurchaseId());
+//                    logger.info("map1. Id: " + value.getPurchaseId());
                     return new KeyValue<>(value.getCommodityId(), value);
                 })
                 .join(commoditiesWithPrices, PurchasePricePair::new, Joined.with(Serdes.Integer(), CustomSerdes.purchase(), Serdes.Double()))
                 .map((key, value) -> {
-                    logger.info("map2. Id: " + value.getPosId());
+//                    logger.info("map2. Id: " + value.getPosId());
                     return new KeyValue<>(value.getPosId(), value);
                 })
                 .join(pointOfSales, (purchasePrice, countryId) -> new PurchasePriceCountryId(countryId, purchasePrice), Joined.with(Serdes.Integer(), CustomSerdes.purchasePricePair(), Serdes.Integer()))
                 .map((key, value) -> {
-                    logger.info("map3. Id: " + value.getPurchasePricePair().getPosId());
+//                    logger.info("map3. Id: " + value.getPurchasePricePair().getPosId());
                     return new KeyValue<>(value.getCountryId(), value.getPurchasePricePair());
                 })
                 .groupByKey(Serialized.with(Serdes.Integer(), CustomSerdes.purchasePricePair()))
                 .aggregate(() -> new Average(0.0, 0),
                         ((key, value, aggregate) -> {
-                            logger.info("aggregate. posId: " + value.getPosId() + " cliId: " + value.getClientId());
+//                            logger.info("aggregate. posId: " + value.getPosId() + " cliId: " + value.getClientId());
                             return aggregate.accumulate(value.getQuantity() * value.getPrice());
                         }),
                         Materialized.with(Serdes.Integer(), CustomSerdes.average()))
                 .mapValues(value -> {
-                            logger.info("mapValues of aggregate");
+//                            logger.info("mapValues of aggregate");
                             return value.value();
                         },
                         Materialized.with(Serdes.Integer(), Serdes.Double()))

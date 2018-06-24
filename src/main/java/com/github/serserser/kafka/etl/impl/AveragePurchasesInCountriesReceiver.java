@@ -30,8 +30,8 @@ public class AveragePurchasesInCountriesReceiver {
                 StreamSupport.stream(records.spliterator(), false)
                         .map(record -> "countryCode: " + record.key() + ";\t average purchase:" + record.value())
                         .forEach(logger::info);
-                Thread.sleep(100);
-                logger.info("sleeping...");
+                Thread.sleep(500);
+//                logger.info("sleeping...");
             }
         }
     }

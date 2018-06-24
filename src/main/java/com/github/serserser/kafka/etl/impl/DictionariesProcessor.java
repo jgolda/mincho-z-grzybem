@@ -7,7 +7,6 @@ import com.github.serserser.kafka.etl.impl.serializers.CustomSerdes;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.IntegerSerializer;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.Consumed;
@@ -26,7 +25,6 @@ import java.nio.file.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 import static com.github.serserser.kafka.etl.impl.Topics.*;
@@ -40,16 +38,16 @@ public class DictionariesProcessor implements Runnable, Loader {
 
     @Override
     public void load() throws URISyntaxException, IOException {
-        if (TEST_DATA_LOAD) {
+        if ( TEST_DATA_LOAD ) {
             doTestLoad();
         } else {
             URI countriesUri = getClass().getClassLoader().getResource("data/countries.txt").toURI();
             String[] countriesUriElements = countriesUri.toString().split("!");
-            try ( Producer<String, Country> producer = new KafkaProducer<>(Utils.createKafkaProperties(CustomSerdes.country().getClass()));
+            try ( Producer<Integer, Country> producer = new KafkaProducer<>(Utils.createKafkaProperties(IntegerSerializer.class, CustomSerdes.country().getClass()));
                   FileSystem fs = getFileSystem(countriesUriElements[0]);
                   Stream<String> countries = Files.lines(fs.getPath(countriesUriElements[1])) ) {
                 countries.map(this::createCountry)
-                        .forEach(cmdty -> send(producer, cmdty, COUNTRIES_TOPIC_NAME));
+                        .forEach(cmdty -> producer.send(new ProducerRecord<>(COUNTRIES_TOPIC_NAME, cmdty.getId(), cmdty)));
             }
 
             logger.info("Loaded countries (1/3)");
@@ -80,11 +78,6 @@ public class DictionariesProcessor implements Runnable, Loader {
 
             logger.info("Loaded all data");
         }
-    }
-
-    private <T> Future<RecordMetadata> send(Producer<String, T> producer, T cmdty, String topicName) {
-        logger.info("sending item");
-        return producer.send(new ProducerRecord<>(topicName, cmdty));
     }
 
     private FileSystem getFileSystem(String uriElement) throws IOException {

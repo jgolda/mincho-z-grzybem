@@ -5,6 +5,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.DoubleDeserializer;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Properties;
@@ -14,6 +16,8 @@ import static com.github.serserser.kafka.etl.impl.Utils.KAFKA_URL;
 
 
 public class ClientTotalPurchaseReceiver {
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientTotalPurchaseReceiver.class);
 
     public static void main(String[] args) throws InterruptedException {
         receive();
@@ -27,7 +31,7 @@ public class ClientTotalPurchaseReceiver {
                 ConsumerRecords<Integer, Double> records = consumer.poll(100);
                 StreamSupport.stream(records.spliterator(), false)
                         .map(stringLongConsumerRecord -> "customerId: " + stringLongConsumerRecord.key() + ";\t total purchase:" + stringLongConsumerRecord.value())
-                        .forEach(System.out::println);
+                        .forEach(logger::info);
                 Thread.sleep(100);
             }
         }

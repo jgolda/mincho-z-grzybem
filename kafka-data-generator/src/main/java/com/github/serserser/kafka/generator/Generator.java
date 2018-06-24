@@ -24,11 +24,11 @@ public class Generator {
         Path inputDirectory = Paths.get("/home/jacek/IdeaProjects/kafka-etl/kafka-data-generator/src/main/resources");
         Path baseDirectory = Files.createDirectory(Paths.get(outputFolder + "/data"));
 
-        int numberOfClients = 1_000_000;
-        int numberOfShops = 100_000;
-        int numberOfCommodities = 50_000;
+        int numberOfClients = 4;
+        int numberOfShops = 10;
+        int numberOfCommodities = 10;
         double maxPrice = 1000;
-        int numberOfPurchases = 2_000_000;
+        int numberOfPurchases = 20;
         int maxQuantity = 20;
 
         List<Integer> clientIds = generateClientIds(baseDirectory, numberOfClients);
