@@ -12,6 +12,8 @@ import org.apache.kafka.streams.kstream.Serialized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,9 +29,9 @@ public class AveragePurchaseQuantityProcessor implements Runnable {
     private static ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 
     private boolean running = false;
-    private long startDate = -1;
-    private long endDate = -1;
-    private long possibleEndDate = -1;
+    private Instant startDate = Instant.MIN;
+    private Instant endDate = Instant.MIN;
+    private Instant possibleEndDate = Instant.MIN;
     private int attempt = 0;
 
     public static void main(String[] args) {
@@ -71,26 +73,37 @@ public class AveragePurchaseQuantityProcessor implements Runnable {
     @Override
     public void run() {
         boolean currentRunning = running;
-        if (currentRunning && startDate < 0) {
-            startDate = System.currentTimeMillis();
-            logger.info("started processing in time: " + startDate);
-        } else if (!currentRunning && startDate > 0 && endDate < 0 && attempt < 20) {
+        if (currentRunning && notStarted(startDate) ) {
+            startDate = Instant.now();
+            logger.info("started processing in time: " + time(startDate));
+        } else if (!currentRunning && started(startDate) && notStarted(endDate) && attempt < 20) {
             attempt++;
             logger.info("found attempt: " + attempt);
             if (attempt == 1) {
-                possibleEndDate = System.currentTimeMillis();
-                logger.info("possible end date: " + possibleEndDate);
+                possibleEndDate = Instant.now();
+                logger.info("possible end date: " + time(possibleEndDate));
             }
-        } else if (!currentRunning && startDate > 0 && endDate < 0) {
+        } else if (!currentRunning && started(startDate) && notStarted(endDate)) {
             endDate = possibleEndDate;
-            long elapsedMillis = endDate - startDate;
-            double elapsedSeconds = elapsedMillis / 1000.0 / 60;
-            logger.info("finished processing in time: " + endDate);
+            double elapsedSeconds = Duration.between(startDate, endDate).toSeconds();
+            logger.info("finished processing in time: " + time(endDate));
             logger.info("total elapsed time in seconds: " + elapsedSeconds);
         }
         if (currentRunning && attempt > 0) {
             attempt = 0;
         }
         running = false;
+    }
+
+    private String time(Instant date) {
+        return date.getEpochSecond() + "." + date.getNano();
+    }
+
+    private boolean started(Instant instant) {
+        return ! notStarted(instant);
+    }
+
+    private boolean notStarted(Instant startDate) {
+        return Instant.MIN.equals(startDate);
     }
 }
