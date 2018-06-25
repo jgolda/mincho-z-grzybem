@@ -9,22 +9,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import static com.github.serserser.kafka.etl.impl.Topics.*;
 
-public class AveragePurchasesInCountriesProcessor implements Runnable {
+public class AveragePurchasesInCountriesProcessor extends ElapsedTimeCalculator {
 
     private static final Logger logger = LoggerFactory.getLogger(AveragePurchasesInCountriesProcessor.class);
+    private static ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 
     private static final String APPLICATION_ID = "country-average-purchase-processor";
 
     public static void main(String[] args) {
         logger.info("starting average purchases app...");
-        AveragePurchasesInCountriesProcessor processor = new AveragePurchasesInCountriesProcessor();
-        processor.run();
+        AveragePurchasesInCountriesProcessor app = new AveragePurchasesInCountriesProcessor();
+        executor.scheduleAtFixedRate(app, 1, 1, TimeUnit.SECONDS);
+        app.execute();
     }
 
-    @Override
-    public void run() {
+    public void execute() {
         StreamsBuilder builder = new StreamsBuilder();
 
         KTable<Integer, Double> commoditiesWithPrices = builder.table(COMMODITIES_KEY_PRICE_TOPIC_NAME, Consumed.with(Serdes.Integer(), Serdes.Double()));
@@ -35,34 +40,46 @@ public class AveragePurchasesInCountriesProcessor implements Runnable {
 
         builder.stream(PURCHASES_TOPIC_NAME, Consumed.with(Serdes.Integer(), CustomSerdes.purchase()))
                 .map((key, value) -> {
-//                    logger.info("map1. Id: " + value.getPurchaseId());
+                    heartBeat();
                     return new KeyValue<>(value.getCommodityId(), value);
                 })
-                .join(commoditiesWithPrices, PurchasePricePair::new, Joined.with(Serdes.Integer(), CustomSerdes.purchase(), Serdes.Double()))
+                .join(commoditiesWithPrices, (purchase, price) -> {
+                    heartBeat();
+                    return new PurchasePricePair(purchase, price);
+                }, Joined.with(Serdes.Integer(), CustomSerdes.purchase(), Serdes.Double()))
                 .map((key, value) -> {
-//                    logger.info("map2. Id: " + value.getPosId());
+                    heartBeat();
                     return new KeyValue<>(value.getPosId(), value);
                 })
-                .join(pointOfSales, (purchasePrice, countryId) -> new PurchasePriceCountryId(countryId, purchasePrice), Joined.with(Serdes.Integer(), CustomSerdes.purchasePricePair(), Serdes.Integer()))
+                .join(pointOfSales, (purchasePrice, countryId) -> {
+                    heartBeat();
+                    return new PurchasePriceCountryId(countryId, purchasePrice);
+                }, Joined.with(Serdes.Integer(), CustomSerdes.purchasePricePair(), Serdes.Integer()))
                 .map((key, value) -> {
-//                    logger.info("map3. Id: " + value.getPurchasePricePair().getPosId());
+                    heartBeat();
                     return new KeyValue<>(value.getCountryId(), value.getPurchasePricePair());
                 })
                 .groupByKey(Serialized.with(Serdes.Integer(), CustomSerdes.purchasePricePair()))
                 .aggregate(() -> new Average(0.0, 0),
                         ((key, value, aggregate) -> {
-//                            logger.info("aggregate. posId: " + value.getPosId() + " cliId: " + value.getClientId());
+                            heartBeat();
                             return aggregate.accumulate(value.getQuantity() * value.getPrice());
                         }),
                         Materialized.with(Serdes.Integer(), CustomSerdes.average()))
                 .mapValues(value -> {
-//                            logger.info("mapValues of aggregate");
+                            heartBeat();
                             return value.value();
                         },
                         Materialized.with(Serdes.Integer(), Serdes.Double()))
                 .toStream()
-                .join(countries, (sale, country) -> new Tuple<>(country.getCode(), sale), Joined.with(Serdes.Integer(), Serdes.Double(), CustomSerdes.country()))
-                .map((key, value) -> new KeyValue<>(value.getFirstValue(), value.getSecondValue()))
+                .join(countries, (sale, country) -> {
+                    heartBeat();
+                    return new Tuple<>(country.getCode(), sale);
+                }, Joined.with(Serdes.Integer(), Serdes.Double(), CustomSerdes.country()))
+                .map((key, value) -> {
+                    heartBeat();
+                    return new KeyValue<>(value.getFirstValue(), value.getSecondValue());
+                })
                 .to(AVERAGE_PURCHASES_BY_COUNTRIES, Produced.with(Serdes.String(), Serdes.Double()));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), Utils.createStreamsKafkaProperties(APPLICATION_ID));
@@ -71,4 +88,8 @@ public class AveragePurchasesInCountriesProcessor implements Runnable {
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
     }
 
+    @Override
+    protected Logger logger() {
+        return logger;
+    }
 }

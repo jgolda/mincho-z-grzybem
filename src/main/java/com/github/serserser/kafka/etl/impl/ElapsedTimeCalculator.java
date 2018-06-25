@@ -51,4 +51,8 @@ public abstract class ElapsedTimeCalculator implements Runnable {
     }
 
     protected abstract Logger logger();
+
+    protected void heartBeat() {
+        running = true;
+    }
 }
