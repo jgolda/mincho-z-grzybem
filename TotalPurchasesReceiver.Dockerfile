@@ -1,4 +1,4 @@
-FROM openjdk:10-slim
+FROM openjdk:10
 MAINTAINER jgolda
 
 ENV JAVA_OPTS=""
