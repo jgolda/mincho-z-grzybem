@@ -28,7 +28,7 @@ public abstract class ElapsedTimeCalculator implements Runnable {
             }
         } else if (!currentRunning && started(startDate) && notStarted(endDate)) {
             endDate = possibleEndDate;
-            double elapsedSeconds = Duration.between(startDate, endDate).toSeconds();
+            double elapsedSeconds = 0; // Duration.between(startDate, endDate).toSeconds();
             logger().info("finished processing in time: " + time(endDate));
             logger().info("total elapsed time in seconds: " + elapsedSeconds);
         }

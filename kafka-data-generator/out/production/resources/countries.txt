@@ -1,0 +1,249 @@
+1, AF, Afghanistan
+2, AL, Albania
+3, DZ, Algeria
+4, AD, Andorra
+5, AO, Angola
+6, AI, Anguilla
+7, AQ, Antarctica
+8, AG, Antigua and Barbuda
+9, SA, Saudi Arabia
+10, AR, Argentina
+11, AM, Armenia
+12, AW, Aruba
+13, AU, Australia
+14, AT, Austria
+15, AZ, Azerbaijan
+16, BS, Bahamas
+17, BH, Bahrain
+18, BD, Bangladesh
+19, BB, Barbados
+20, BE, Belgium
+21, BZ, Belize
+22, BJ, Benin
+23, BM, Bermuda
+24, BT, Bhutan
+25, BY, Belarus
+26, BO, Bolivia, Plurinational State of
+27, BQ, Bonaire, Sint Eustatius and Saba
+28, BA, Bosnia and Herzegovina
+29, BW, Botswana
+30, BR, Brazil
+31, BN, Brunei Darussalam
+32, IO, British Indian Ocean Territory
+33, VG, Virgin Islands, British
+34, BG, Bulgaria
+35, BF, Burkina Faso
+36, BI, Burundi
+37, CL, Chile
+38, CN, China
+39, HR, Croatia
+40, CW, Curaçao
+41, CY, Cyprus
+42, TD, Chad
+43, ME, Montenegro
+44, CZ, Czechia
+45, UM, United States Minor Outlying Islands
+46, DK, Denmark
+47, CD, Congo, the Democratic Republic of the
+48, DM, Dominica
+49, DO, Dominican Republic
+50, DJ, Djibouti
+51, EG, Egypt
+52, EC, Ecuador
+53, ER, Eritrea
+54, EE, Estonia
+55, ET, Ethiopia
+56, FK, Falkland Islands (Malvinas)
+57, FJ, Fiji
+58, PH, Philippines
+59, FI, Finland
+60, FR, France
+61, TF, French Southern Territories
+62, GA, Gabon
+63, GM, Gambia
+64, GS, South Georgia and the South Sandwich Islands
+65, GH, Ghana
+66, GI, Gibraltar
+67, GR, Greece
+68, GD, Grenada
+69, GL, Greenland
+70, GE, Georgia
+71, GU, Guam
+72, GG, Guernsey
+73, GF, French Guiana
+74, GY, Guyana
+75, GP, Guadeloupe
+76, GT, Guatemala
+77, GW, Guinea-Bissau
+78, GQ, Equatorial Guinea
+79, GN, Guinea
+80, HT, Haiti
+81, ES, Spain
+82, NL, Netherlands
+83, HN, Honduras
+84, HK, Hong Kong
+85, IN, India
+86, ID, Indonesia
+87, IQ, Iraq
+88, IR, Iran, Islamic Republic of
+89, IE, Ireland
+90, IS, Iceland
+91, IL, Israel
+92, JM, Jamaica
+93, JP, Japan
+94, YE, Yemen
+95, JE, Jersey
+96, JO, Jordan
+97, KY, Cayman Islands
+98, KH, Cambodia
+99, CM, Cameroon
+100, CA, Canada
+101, QA, Qatar
+102, KZ, Kazakhstan
+103, KE, Kenya
+104, KG, Kyrgyzstan
+105, KI, Kiribati
+106, CO, Colombia
+107, KM, Comoros
+108, CG, Congo
+109, KR, Korea, Republic of
+110, KP, Korea, Democratic People's Republic of
+111, CR, Costa Rica
+112, CU, Cuba
+113, KW, Kuwait
+114, LA, Lao People's Democratic Republic
+115, LS, Lesotho
+116, LB, Lebanon
+117, LR, Liberia
+118, LY, Libyan Arab Jamahiriya
+119, LI, Liechtenstein
+120, LT, Lithuania
+121, LU, Luxembourg
+122, LV, Latvia
+123, MK, Macedonia, the former Yugoslav Republic of
+124, MG, Madagascar
+125, YT, Mayotte
+126, MO, Macao
+127, MW, Malawi
+128, MV, Maldives
+129, MY, Malaysia
+130, ML, Mali
+131, MT, Malta
+132, MP, Northern Mariana Islands
+133, MA, Morocco
+134, MQ, Martinique
+135, MR, Mauritania
+136, MU, Mauritius
+137, MX, Mexico
+138, FM, Micronesia, Federated States of
+139, MM, Myanmar
+140, MD, Moldova, Republic of
+141, MC, Monaco
+142, MN, Mongolia
+143, MS, Montserrat
+144, MZ, Mozambique
+145, NA, Namibia
+146, NR, Nauru
+147, NP, Nepal
+148, DE, Germany
+149, NE, Niger
+150, NG, Nigeria
+151, NI, Nicaragua
+152, NU, Niue
+153, NF, Norfolk Island
+154, NO, Norway
+155, NC, New Caledonia
+156, NZ, New Zealand
+157, OM, Oman
+158, PK, Pakistan
+159, PW, Palau
+160, PS, Palestinian Territory, Occupied
+161, PA, Panama
+162, PG, Papua New Guinea
+163, PY, Paraguay
+164, PE, Peru
+165, PN, Pitcairn
+166, PF, French Polynesia
+167, PL, Poland
+168, PR, Puerto Rico
+169, PT, Portugal
+170, ZA, South Africa
+171, CF, Central African Republic
+172, CV, Cape Verde
+173, RE, Réunion
+174, RU, Russian Federation
+175, RO, Romania
+176, RW, Rwanda
+177, EH, Western Sahara
+178, KN, Saint Kitts and Nevis
+179, LC, Saint Lucia
+180, VC, Saint Vincent and the Grenadines
+181, BL, Saint Barthélemy
+182, MF, Saint Martin (French part)
+183, PM, Saint Pierre and Miquelon
+184, SV, El Salvador
+185, AS, American Samoa
+186, WS, Samoa
+187, SM, San Marino
+188, SN, Senegal
+189, RS, Serbia
+190, SC, Seychelles
+191, SL, Sierra Leone
+192, SG, Singapore
+193, SX, Sint Maarten (Dutch part)
+194, SK, Slovakia
+195, SI, Slovenia
+196, SO, Somalia
+197, LK, Sri Lanka
+198, US, United States
+199, SZ, Swaziland
+200, SD, Sudan
+201, SS, South Sudan
+202, SR, Suriname
+203, SJ, Svalbard and Jan Mayen
+204, SY, Syrian Arab Republic
+205, CH, Switzerland
+206, SE, Sweden
+207, TJ, Tajikistan
+208, TH, Thailand
+209, TW, Taiwan, Province of China
+210, TZ, Tanzania, United Republic of
+211, TL, Timor-Leste
+212, TG, Togo
+213, TK, Tokelau
+214, TO, Tonga
+215, TT, Trinidad and Tobago
+216, TN, Tunisia
+217, TR, Turkey
+218, TM, Turkmenistan
+219, TC, Turks and Caicos Islands
+220, TV, Tuvalu
+221, UG, Uganda
+222, UA, Ukraine
+223, UY, Uruguay
+224, UZ, Uzbekistan
+225, VU, Vanuatu
+226, WF, Wallis and Futuna
+227, VA, Holy See (Vatican City State)
+228, VE, Venezuela, Bolivarian Republic of
+229, HU, Hungary
+230, GB, United Kingdom
+231, VN, Viet Nam
+232, IT, Italy
+233, CI, Côte d'Ivoire
+234, BV, Bouvet Island
+235, CX, Christmas Island
+236, IM, Isle of Man
+237, SH, Saint Helena, Ascension and Tristan da Cunha
+238, AX, Åland Islands
+239, CK, Cook Islands
+240, VI, Virgin Islands, U.S.
+241, HM, Heard Island and McDonald Islands
+242, CC, Cocos (Keeling) Islands
+243, MH, Marshall Islands
+244, FO, Faroe Islands
+245, SB, Solomon Islands
+246, ST, Sao Tome and Principe
+247, ZM, Zambia
+248, ZW, Zimbabwe
+249, AE, United Arab Emirates

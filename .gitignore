@@ -1,1 +1,6 @@
 build/
+out/
+.idea/
+.gradle/
+kafka-data-generator/.gradle/*
+*.class
